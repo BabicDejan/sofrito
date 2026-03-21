@@ -1,0 +1,422 @@
+@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800&family=Bitter:wght@600;700;800&display=swap");
+
+:root {
+    --bg-dark: #171717;
+    --bg-dark-2: #0d0d0d;
+    --accent: #2f2522;
+    --accent-soft: #9f3f3d;
+    --panel-bg: #f5f5f3;
+    --text-dark: #2f2522;
+    --text-soft: #7a665f;
+    --text-muted: rgba(255, 255, 255, 0.72);
+    --rail-width: 138px;
+    --nav-radius: 30px;
+    --nav-inset-left: 10px;
+    --content-max: 760px;
+    --card-border: rgba(111, 67, 53, 0.1);
+    --card-shadow: 0 10px 24px rgba(0, 0, 0, 0.06);
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+    margin: 0;
+    min-height: 100%;
+    font-family:
+        "Inter",
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+    background: var(--bg-dark);
+    color: var(--text-dark);
+}
+
+body {
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+}
+
+img {
+    display: block;
+    max-width: 100%;
+}
+
+button {
+    font: inherit;
+}
+
+.menu-page {
+    min-height: 100vh;
+}
+
+.menu-shell {
+    display: grid;
+    grid-template-columns: var(--rail-width) minmax(0, 1fr);
+    min-height: 100vh;
+}
+
+/* LIJEVI RAIL */
+.menu-rail {
+    position: relative;
+    z-index: 3;
+    padding: 24px 0;
+    background:
+        radial-gradient(
+            circle at top left,
+            rgba(178, 58, 52, 0.22),
+            transparent 28%
+        ),
+        radial-gradient(
+            circle at bottom right,
+            rgba(223, 172, 79, 0.12),
+            transparent 24%
+        ),
+        linear-gradient(
+            180deg,
+            rgba(255, 255, 255, 0.02),
+            rgba(255, 255, 255, 0) 18%
+        ),
+        linear-gradient(180deg, var(--bg-dark) 0%, var(--bg-dark-2) 100%);
+    overflow: visible;
+}
+
+.menu-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-top: 8px;
+}
+
+.menu-nav__item {
+    all: unset;
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-height: 96px;
+
+    /* IZMJENA: Umjesto calc širine, koristimo marginu da "odguramo" item od lijeve ivice */
+    margin-left: var(--nav-inset-left);
+    width: auto;
+
+    /* Osigurava da item popuni preostali prostor do panela */
+    flex: 1;
+
+    padding: 0 12px 0 16px;
+    cursor: pointer;
+    border-radius: var(--nav-radius) 0 0 var(--nav-radius);
+    color: var(--text-muted);
+
+    /* Dodaj ovo da spriječiš tekst da se razvlači van okvira */
+    box-sizing: border-box;
+}
+
+.menu-nav__item:hover {
+    color: #ffffff;
+}
+
+.menu-nav__item:focus-visible {
+    outline: 2px solid rgba(223, 172, 79, 0.55);
+    outline-offset: -2px;
+}
+
+.menu-nav__label {
+    width: 100%;
+    font-family: "Bebas Neue", "Inter", sans-serif;
+    font-size: 1.22rem;
+    line-height: 0.96;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    text-align: left;
+    color: inherit;
+    overflow-wrap: break-word;
+    word-break: break-word;
+}
+
+.menu-nav__item--active {
+    background: var(--panel-bg);
+    color: var(--accent);
+    z-index: 6;
+    /* Gura desnu ivicu za 1px preko granice raila */
+    margin-right: -1px;
+    /* Osigurava da širina pokrije taj dodatni pixel */
+    width: calc(100% - var(--nav-inset-left) + 1px);
+    /* Umjesto ::after, dodaj 1px desnu sjenku u boji panela */
+    box-shadow: 1px 0 0 0 var(--panel-bg);
+    border-right: none;
+}
+
+.menu-nav__item--active .menu-nav__label {
+    color: var(--accent) !important;
+}
+
+/* Osnovna podešavanja za oba elementa */
+/* Grupisanje oba elementa za osnovna svojstva */
+.menu-nav__curve-top,
+.menu-nav__curve-bottom {
+    position: absolute;
+    right: -1px;
+    width: var(--nav-radius);
+    height: var(--nav-radius);
+    background: transparent;
+    pointer-events: none;
+    z-index: 10;
+    transition: none !important; /* KRITIČNO: Krivine ne smiju da "putuju" ili blijede */
+    opacity: 1;
+    visibility: visible;
+    display: none; /* Sakriveno dok item nije aktivan */
+}
+
+/* Prikazivanje kada je roditelj aktivan */
+.menu-nav__item--active .menu-nav__curve-top,
+.menu-nav__item--active .menu-nav__curve-bottom {
+    display: block;
+}
+
+/* Gornja krivina - Sjenka ide DOLJE DESNO */
+.menu-nav__curve-top {
+    top: calc(var(--nav-radius) * -0.75);
+    right: -1px;
+    border-bottom-right-radius: var(--nav-radius);
+    /* X: 15px (desno), Y: 7px (dolje) */
+    box-shadow: 15px 7px 0 0 var(--panel-bg);
+}
+
+.menu-nav__curve-bottom {
+    /* Pozicioniranje: ista proporcija kao top */
+    bottom: calc(var(--nav-radius) * -0.75);
+    right: -1px;
+
+    /* Oblik: gornji desni ćošak */
+    border-top-right-radius: var(--nav-radius);
+
+    /* Sjenka - ogledalo gornje:
+       X: 15px (ostaje pozitivno da bi guralo desno u panel)
+       Y: -7px (negativno da bi guralo GORE, prateći tvojih 7px sa top-a)
+    */
+    box-shadow: 15px -7px 0 0 var(--panel-bg);
+}
+
+/* DESNI PANEL */
+.menu-panel {
+    position: relative;
+    z-index: 2;
+    min-width: 0;
+    padding: 24px 16px 28px;
+    margin-left: -1px;
+    background: var(--panel-bg);
+    border-radius: var(--nav-radius) 0 0 var(--nav-radius);
+    box-shadow: inset 1px 0 0 var(--panel-bg);
+    overflow: hidden;
+}
+
+.menu-panel__header {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.menu-brand {
+    width: min(100%, 150px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.menu-brand__chef {
+    width: 62px;
+    margin-bottom: -6px;
+}
+
+.menu-brand__text {
+    width: 100%;
+}
+
+.menu-category {
+    width: min(100%, var(--content-max));
+    margin: 0 auto;
+}
+
+.menu-category__header {
+    display: block;
+    margin-bottom: 18px;
+    text-align: left;
+}
+
+.menu-category__eyebrow {
+    margin: 0 0 4px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-soft);
+}
+
+.menu-category__title {
+    margin: 0;
+    font-family: "Bebas Neue", "Inter", sans-serif;
+    font-size: 1.9rem;
+    line-height: 0.95;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: var(--accent-soft);
+}
+
+/* KARTICE */
+.menu-items {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+}
+
+.menu-item {
+    background: rgba(255, 255, 255, 0.96);
+    border: 1px solid var(--card-border);
+    border-radius: 18px;
+    padding: 16px 16px 14px;
+    box-shadow: var(--card-shadow);
+}
+
+.menu-item__top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: flex-start;
+    gap: 4px 10px;
+}
+
+.menu-item__name-wrap {
+    flex: 0 1 auto;
+    min-width: 0;
+    max-width: 100%;
+}
+
+.menu-item__name {
+    display: inline;
+    margin: 0;
+    font-family: "Bitter", Georgia, serif;
+    font-size: 1.02rem;
+    line-height: 1.2;
+    font-weight: 800;
+    color: #7d2f2f;
+}
+
+.menu-item__meta {
+    display: inline;
+    margin: 0 0 0 6px;
+    font-size: 0.9rem;
+    line-height: 1.3;
+    font-weight: 600;
+    color: var(--text-soft);
+}
+
+.menu-item__price {
+    display: block;
+    width: 100%;
+    margin: 6px 0 0;
+    font-family: "Bitter", Georgia, serif;
+    font-size: 1.02rem;
+    line-height: 1.1;
+    font-weight: 800;
+    color: var(--accent-soft);
+    white-space: nowrap;
+}
+
+.menu-item__desc {
+    margin: 8px 0 0;
+    font-size: 0.9rem;
+    line-height: 1.42;
+    color: var(--text-soft);
+}
+
+.menu-item__desc:empty,
+.menu-item__meta:empty {
+    display: none;
+}
+
+@media (min-width: 768px) {
+    :root {
+        --rail-width: 168px;
+        --nav-inset-left: 14px;
+        --nav-radius: 34px;
+    }
+
+    .menu-nav__item {
+        min-height: 112px;
+        padding: 0 16px 0 22px;
+    }
+
+    .menu-nav__label {
+        font-size: 1.5rem;
+    }
+
+    .menu-panel {
+        padding: 34px 30px 40px;
+    }
+
+    .menu-panel__header {
+        margin-bottom: 26px;
+    }
+
+    .menu-brand {
+        width: min(100%, 190px);
+    }
+
+    .menu-brand__chef {
+        width: 82px;
+        margin-bottom: -8px;
+    }
+
+    .menu-category__title {
+        font-size: 2.2rem;
+    }
+
+    .menu-items {
+        gap: 16px;
+    }
+
+    .menu-item {
+        padding: 18px 18px 16px;
+    }
+
+    .menu-item__name,
+    .menu-item__price {
+        font-size: 1.08rem;
+    }
+}
+
+@media (min-width: 1100px) {
+    :root {
+        --rail-width: 186px;
+    }
+
+    .menu-panel {
+        padding: 38px 40px 44px;
+    }
+
+    .menu-nav__label {
+        font-size: 1.68rem;
+    }
+
+    .menu-items {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 18px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        transition: none !important;
+        animation: none !important;
+        scroll-behavior: auto !important;
+    }
+}

@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="sr-ME">
+    <head>
+        <meta charset="UTF-8" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+        />
+        <meta name="description" content="Soffritto online meni" />
+        <title>Soffritto | Meni</title>
+        <link rel="stylesheet" href="menu.css" />
+        <script src="menu_script.js" defer></script>
+    </head>
+    <body>
+        <div class="menu-page">
+            <main class="menu-shell">
+                <aside class="menu-rail" aria-label="Kategorije menija">
+                    <nav class="menu-nav">
+                        <button
+                            type="button"
+                            class="menu-nav__item menu-nav__item--active"
+                            data-category="kafe"
+                            aria-current="page"
+                        >
+                            <span
+                                class="menu-nav__curve-top"
+                                aria-hidden="true"
+                            ></span>
+                            <span
+                                class="menu-nav__curve-bottom"
+                                aria-hidden="true"
+                            ></span>
+                            <span class="menu-nav__label">KAFE</span>
+                        </button>
+                        <button
+                            type="button"
+                            class="menu-nav__item"
+                            data-category="pica"
+                        >
+                            <span class="menu-nav__label">PIĆA</span>
+                        </button>
+                        <button
+                            type="button"
+                            class="menu-nav__item"
+                            data-category="paste"
+                        >
+                            <span class="menu-nav__label">PASTE</span>
+                        </button>
+                        <button
+                            type="button"
+                            class="menu-nav__item"
+                            data-category="sendvici"
+                        >
+                            <span class="menu-nav__label">SENDVIČI</span>
+                        </button>
+                        <button
+                            type="button"
+                            class="menu-nav__item"
+                            data-category="specijaliteti"
+                        >
+                            <span class="menu-nav__label">SPECIJALITETI</span>
+                        </button>
+                    </nav>
+                </aside>
+
+                <section class="menu-panel">
+                    <header class="menu-panel__header">
+                        <div class="menu-brand">
+                            <img
+                                src="assets/logo_chef_crni.png"
+                                alt="Soffritto logo"
+                                class="menu-brand__chef"
+                            />
+                            <img
+                                src="assets/soffritto_tekst_crni.png"
+                                alt="Soffritto"
+                                class="menu-brand__text"
+                            />
+                        </div>
+                    </header>
+
+                    <section class="menu-category" aria-live="polite">
+                        <div class="menu-category__header">
+                            <p class="menu-category__eyebrow">Meni</p>
+                            <h1
+                                class="menu-category__title"
+                                id="menuCategoryTitle"
+                            >
+                                KAFE
+                            </h1>
+                        </div>
+                        <div class="menu-items" id="menuItems"></div>
+                    </section>
+                </section>
+            </main>
+        </div>
+    </body>
+</html>

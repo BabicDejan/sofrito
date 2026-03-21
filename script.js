@@ -36,9 +36,8 @@ function onDrag(e) {
 function endDrag() {
   const max = slider.offsetWidth - handle.offsetWidth - 8;
 
-  // ✅ AKO JE PREVUČENO DOVOLJNO → OTVORI MENI
   if (currentX > max * 0.6) {
-    window.location.href = "#menuPanel"; // ili otvori panel JS-om
+    window.location.href = "menu.html"; // ili otvori panel JS-om
   } else {
     // vrati nazad
     handle.style.transition = "transform 0.3s ease";
